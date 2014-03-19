@@ -4,11 +4,11 @@ var Canvas = function(_elemID, _config) {
     var layerText = null;
     var arrTexts = [];
     var config = _config;
-
     /*
-    	Elements
+        Elements
     */
     var rectBG = null;
+    var imgObj = null;
 
     function init() {
         stage = new Kinetic.Stage({
@@ -16,25 +16,29 @@ var Canvas = function(_elemID, _config) {
             width: config.width,
             height: config.height
         });
+
         layerBG = new Kinetic.Layer();
         layerText = new Kinetic.Layer();
-        arrTexts = [];
-
-        rectBG = new Kinetic.Rect({
-            x: 0,
-            y: 0,
-            fill: '#272822',
-            width: stage.width(),
-            height: stage.height(),
-        });
-
-        layerBG.add(rectBG);
-
         stage.add(layerBG);
         stage.add(layerText);
+        arrTexts = [];
+
+
+        rectBG = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: imgObj,
+            width: config.width,
+            height: config.height
+        });
+        console.log(rectBG);
+        layerBG.add(rectBG);
+
+        console.log("-----------------INIT-----------");
 
         stage.draw();
-        // handle resize?
+        rectBG.draw();
+        // // handle resize?
     };
 
     function setupTextHandler(group, groupHover, btnDelete, simpleText, rectCB, groupChecked, redLine, lineFinished, underlined) {
@@ -76,6 +80,32 @@ var Canvas = function(_elemID, _config) {
             group.checked = !group.checked;
             stage.draw();
         });
+    }
+
+    function addTriangle() {
+        var group = new Kinetic.Group({
+            x: 100,
+            y: 100,
+            draggable: true,
+            name: 'trigrp'
+        });
+
+        var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+
+        var tri = new Kinetic.Star({
+            x: stage.width() / 2,
+            y: stage.height() / 2,
+            numPoints: 3,
+            innerRadius: 180,
+            outerRadius: 90,
+            fill: 'transparent',
+            stroke: color,
+            strokeWidth: 30,
+            opacity: 0.2
+        });
+        group.add(tri);
+        layerText.add(group);
+
     }
 
     function addText(x, y, text, type) {
@@ -224,6 +254,7 @@ var Canvas = function(_elemID, _config) {
     };
 
     function redraw() {
+        console.log("--------------REDRAW-------------");
         stage.draw();
     };
 
@@ -245,7 +276,20 @@ var Canvas = function(_elemID, _config) {
         redraw();
     };
 
+    function imgLoad(src, callback) {
+        imgObj = new Image();
+        imgObj.src = src;
+
+        imgObj.onload = function() {
+            callback();
+        };
+
+        console.log("-----------------IMGLOAD-----------");
+    }
+
     return {
+        addTriangle: addTriangle,
+        imgLoad: imgLoad,
         init: init,
         addText: addText,
         exportAsJSON: exportAsJSON,

@@ -7,7 +7,9 @@
 */
 
 var canvas = Canvas('container', config);
-canvas.init();
+canvas.imgLoad('img/Deer.jpg', canvas.init);
+
+
 /* 
     Click handler
 */
@@ -17,7 +19,8 @@ $('#fullscreen').click(function() {
 });
 
 $('#tier1').click(function() {
-    canvas.addText(100, 100, 'Edit me!', 0);
+    canvas.addTriangle();
+    // canvas.addText(100, 100, 'Edit me!', 0);
     canvas.redraw();
     $('#download').hide();
 });
