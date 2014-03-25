@@ -31,10 +31,10 @@ var Canvas = function(_elemID, _config) {
             width: config.width,
             height: config.height
         });
-        console.log(rectBG);
+        rectBG.isfilter = false;
+        rectBG.cache();
         layerBG.add(rectBG);
 
-        console.log("-----------------INIT-----------");
 
         stage.draw();
         rectBG.draw();
@@ -80,7 +80,44 @@ var Canvas = function(_elemID, _config) {
             group.checked = !group.checked;
             stage.draw();
         });
+
+        tri.on('click tap', function() {
+            if (group.checked) {
+                groupChecked.hide();
+                lineFinished.hide();
+            } else {
+                groupChecked.show();
+                lineFinished.show();
+            }
+            group.checked = !group.checked;
+            stage.draw();
+        });
     }
+
+
+    function setupTriHandler(group, btnDelete, tri, groupChecked) {
+
+
+        btnDelete.on('click tap', function() {
+            group.remove();
+            stage.draw();
+        });
+
+        tri.on('click tap', function() {
+            console.log("------------CLICK-----------   " + group.checked);
+            console.log(groupChecked);
+
+
+            if (!group.checked) {
+                groupChecked.hide();
+            } else {
+                groupChecked.show();
+            }
+            group.checked = !group.checked;
+            stage.draw();
+        });
+    }
+
 
     function addTriangle() {
         var group = new Kinetic.Group({
@@ -89,22 +126,61 @@ var Canvas = function(_elemID, _config) {
             draggable: true,
             name: 'trigrp'
         });
+        group.checked = true;
 
-        var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+        var color = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
         var tri = new Kinetic.Star({
-            x: stage.width() / 2,
-            y: stage.height() / 2,
+            x: stage.width() / 4,
+            y: stage.height() / 4,
             numPoints: 3,
             innerRadius: 180,
             outerRadius: 90,
-            fill: 'transparent',
             stroke: color,
-            strokeWidth: 30,
-            opacity: 0.2
+            strokeWidth: 25,
+            opacity: 0.4
         });
+        tri.shadowColor(color);
+        tri.shadowBlur(100);
+        tri.shadowOpacity(1);
+        tri.shadowOffsetX(0);
+        tri.shadowEnabled(true);
         group.add(tri);
         layerText.add(group);
+
+        var tSize = tri.height();
+        var groupChecked = new Kinetic.Group({
+            x: -tSize / 2,
+            y: tSize / 4,
+            name: 'cbCross',
+            visible: true
+        });
+        var lineCB1 = new Kinetic.Line({
+            points: [0, 0, (tSize / 2), tSize / 2],
+            stroke: '#FF9800',
+            strokeWidth: 1
+        });
+        var lineCB2 = new Kinetic.Line({
+            points: [(tSize / 2), 0, 0, tSize / 2],
+            stroke: '#FF9800',
+            strokeWidth: 1
+        });
+
+        var btnDelete = new Kinetic.Text({
+            x: -20,
+            y: -20,
+            text: 'X',
+            fontSize: 40,
+            fontFamily: 'Lato',
+            fill: '#FF9800',
+            name: 'btnDelete'
+        });
+
+        groupChecked.add(btnDelete);
+        groupChecked.add(lineCB1);
+        groupChecked.add(lineCB2);
+        group.add(groupChecked);
+        setupTriHandler(group, btnDelete, tri, groupChecked);
 
     }
 
@@ -219,6 +295,28 @@ var Canvas = function(_elemID, _config) {
         return group;
     };
 
+
+
+    function addFilter(n) {
+        rectBG.cache();
+        switch (n) {
+            case 0:
+                (rectBG.isfilter && Kinetic.Filters.Grayscale.toString() == rectBG.filters().toString()) ? (rectBG.isfilter = false, rectBG.filters([])) : (rectBG.isfilter = true, rectBG.filters([Kinetic.Filters.Grayscale]));
+                stage.draw();
+                break;
+            case 1:
+
+                (rectBG.isfilter && Kinetic.Filters.Sepia.toString() == rectBG.filters().toString()) ? (rectBG.isfilter = false, rectBG.filters([])) : (rectBG.isfilter = true, rectBG.filters([Kinetic.Filters.Sepia]));
+                stage.draw();
+                break;
+            case 2:
+                (rectBG.isfilter && Kinetic.Filters.Noise.toString() == rectBG.filters().toString()) ? (rectBG.isfilter = false, rectBG.filters([])) : (rectBG.isfilter = true, rectBG.filters([Kinetic.Filters.Noise]));
+                stage.draw();
+                break;
+        }
+    }
+
+
     function exportAsJSON() {
         return layerText.toJSON();
     };
@@ -254,7 +352,6 @@ var Canvas = function(_elemID, _config) {
     };
 
     function redraw() {
-        console.log("--------------REDRAW-------------");
         stage.draw();
     };
 
@@ -284,10 +381,10 @@ var Canvas = function(_elemID, _config) {
             callback();
         };
 
-        console.log("-----------------IMGLOAD-----------");
     }
 
     return {
+        addFilter: addFilter,
         addTriangle: addTriangle,
         imgLoad: imgLoad,
         init: init,

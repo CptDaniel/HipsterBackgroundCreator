@@ -25,6 +25,34 @@ $('#tier1').click(function() {
     $('#download').hide();
 });
 
+$('#filter').click(function() {
+    $(".drp").toggle();
+    // canvas.addFilter();
+    canvas.redraw();
+    $('#download').hide();
+});
+
+$('#filter1').click(function() {
+    $(".drp").toggle();
+    canvas.addFilter(0);
+    canvas.redraw();
+    $('#download').hide();
+});
+
+$('#filter2').click(function() {
+    $(".drp").toggle();
+    canvas.addFilter(1);
+    canvas.redraw();
+    $('#download').hide();
+});
+
+$('#filter3').click(function() {
+    $(".drp").toggle();
+    canvas.addFilter(2);
+    canvas.redraw();
+    $('#download').hide();
+});
+
 $('#tier2').click(function() {
     canvas.addText(100, 100, 'Edit me!', 1);
     canvas.redraw();

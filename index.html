@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
 
@@ -21,20 +22,27 @@
     <![endif]-->
 </head>
 
-<body> 
+<body>
     <div id="btns">
-        <div class="btn" id="tier1"> Add Triangle </div>
+        <div class="btn" id="tier1">Add Triangle</div>
+        <div class="btn" id="filter">Add Filter</div>
+        <div class="btn drp">
+            <div class="btn flt" id="filter1">Add Grayscale</div>
+            <div class="btn flt" id="filter2">Add Sepia</div>
+            <div class="btn flt" id="filter3">Add Noise</div>
+        </div>
+
         <!-- <div class="btn" id="tier2"> Add Tier2 </div> -->
         <!-- <div class="btn" id="tier3"> Add Tier3 </div> -->
-        <div class="btn" id="jpg" download="bg.jpeg"> Create JPEG </div>
+        <div class="btn" id="jpg" download="bg.jpeg">Create JPEG</div>
         <!-- <div class="btn" id="im"> Import </div> -->
         <a class="btn" id="ex" target="_blank"> Export </a>
-        <div class="btn" id="fullscreen"> Fullscreen </div>
+        <div class="btn" id="fullscreen">Fullscreen</div>
         <a id="download" href="" target="_blank">Download</a>
     </div>
 
     <div id="container"></div>
-    
+
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.1.min.js"></script>
 
     <script src="js/config.js"></script>
@@ -43,4 +51,5 @@
     <script src="js/canvas.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>
